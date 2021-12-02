@@ -13,8 +13,8 @@ Whether that's something we can actually achieve remains to be seen and might ta
 As a reminder - setup a virtual environment:
 
 ```
-python3 -m venv .
-source bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 Then install the requirements:
