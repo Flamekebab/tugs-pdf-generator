@@ -16,3 +16,6 @@ source bin/activate
 
 Then install the requirements:
 pip install -r requirements.txt
+
+Additional reminder - to create an updated requirements.txt:
+pip freeze > requirements.txt 
