@@ -19,3 +19,7 @@ pip install -r requirements.txt
 
 Additional reminder - to create an updated requirements.txt:
 pip freeze > requirements.txt 
+
+Useful reference sources:
+https://www.reportlab.com/docs/reportlab-userguide.pdf
+https://www.reportlab.com/docs/reportlab-reference.pdf
