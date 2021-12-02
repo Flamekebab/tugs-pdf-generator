@@ -9,3 +9,10 @@ The goal is to create a web-based tool that dynamically combines various PDFs to
 Select what you want, add an introduction of your own choosing, hit the button and render it out, complete with table of contents.
 
 Whether that's something we can actually achieve remains to be seen and might take a while but let's have a go!
+
+As a reminder - setup a virtual environment:
+python3 -m venv .
+source bin/activate
+
+Then install the requirements:
+pip install -r requirements.txt
