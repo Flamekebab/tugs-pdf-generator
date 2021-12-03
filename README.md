@@ -11,15 +11,25 @@ Select what you want, add an introduction of your own choosing, hit the button a
 Whether that's something we can actually achieve remains to be seen and might take a while but let's have a go!
 
 As a reminder - setup a virtual environment:
-python3 -m venv .
-source bin/activate
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
 Then install the requirements:
+
+```
 pip install -r requirements.txt
+```
 
 Additional reminder - to create an updated requirements.txt:
+
+```
 pip freeze > requirements.txt 
+```
 
 Useful reference sources:
-https://www.reportlab.com/docs/reportlab-userguide.pdf
-https://www.reportlab.com/docs/reportlab-reference.pdf
+
+- [ReportLab User Guide](https://www.reportlab.com/docs/reportlab-userguide.pdf)  
+- [ReportLab Reference](https://www.reportlab.com/docs/reportlab-reference.pdf)
