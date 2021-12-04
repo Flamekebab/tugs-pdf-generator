@@ -33,3 +33,32 @@ Useful reference sources:
 
 - [ReportLab User Guide](https://www.reportlab.com/docs/reportlab-userguide.pdf)  
 - [ReportLab Reference](https://www.reportlab.com/docs/reportlab-reference.pdf)
+
+# Vague Task List
+
+## Document list compiler
+
+There'll be a folder of PDFs, left and right versions (so that the page number ends up in the right place). 
+Each document will need some sort of data kept on it.
+Something like an XML file or JSON keeping track of its title, document type, author, licence, and anything else that could be useful.
+Ideally that data should be built in such a way as to allow us to add additional data without breaking anything later.
+
+Once each document has its data there should either be a manifest that's created and cached periodically or a way to generate an equivalent each time the PDF builder runs.
+
+## Cover page generator
+
+A tool to take text input and generate a single page (multi?) page PDF using the right fonts, in the right layout (ideally two column).
+
+## Table of contents generator
+
+A tool that takes the provided PDF choices and generates a table of contents to go after the cover page.
+
+## Document combiner
+
+A tool that combines the chosen documents, grabs the appropriate left or right version, adds page numbers, and then combines them with the cover page and table of contents PDFs.
+
+## GUI for finished application
+
+A web-based front-end that will provide the end user with a list of available documents to choose from as basic functionality.
+Further down the line it should provide a few forms of simple text input to provide their own cover page and title for the booklet we're going to generate.
+
