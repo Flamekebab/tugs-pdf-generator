@@ -44,15 +44,15 @@ Once the options are selected the server assembles a PDF and offers it for downl
 
 ## Document list compiler
 
-There'll be a folder of PDFs, left and right versions (so that the page number ends up in the right place). 
+There'll be a folder of PDFs, left and right versions (so that the page number ends up in the right place), or just generic PDFs.
 Each document will need some sort of data kept on it for portability. This can be auto-generated for PDFs that have meta data but we cannot rely on that existing and so some way of manually inputting it seems like a good idea.
 
 Either we have a manifest file for each PDF or we have a single central index. Ideally I want to avoid databases for the sake of ease of portability.
 
 The code should check the timestamp on the central index and only recreate it if it's older than (time). No need to rescan a load of files every time the page loads.
 
-JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, and anything else that could be useful.
-The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found.
+JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, left or right status, and anything else that could be useful.
+The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found. Similarly if no left/right version is found fallback to a generic version of the document.
 
 ## Cover page generator/Table of contents generator
 
@@ -65,7 +65,7 @@ Once that's done create the ToC.
 
 Take the input from the HTML form and check the page count in the manifest. Based on whether a cover page is included or not calculate on which page each document will start. Grab the title of each from the manifest and create the relevant text data.
 
-Render it out in two columns using the code from the cover page generator. The page number could be either left or right, depending on whether a cover page is included or not.
+Render it out in two columns using the code from the cover page generator. The page number could be either left or right, depending on whether a cover page is included or not. The option for non-Gorkamorka documents means we need to render a white box underneath the page number, or render the text in white with a stroked black outline - whichever is easiest.
 
 ## Document combiner
 
