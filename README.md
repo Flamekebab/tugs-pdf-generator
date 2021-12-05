@@ -84,3 +84,4 @@ This may end up being both complicated and simple. Complicated in that it'll pro
 # Questions to be answered:
 
 -Is it better to add text on top of blank PDFs for the cover page/ToC or to render from scratch?
+-Which framework makes the most sense for the GUI?
