@@ -28,21 +28,27 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_JUSTIFY
 import random
 
-words = "lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et".split()
-
+# Load some defaults
 styles=getSampleStyleSheet()
-Elements=[]
 
-
+# We'll need to check these margins, I suspect
+# We can turn off showBoundary when we're ready but it's handy for debugging
 doc = BaseDocTemplate('test.pdf',showBoundary=1,leftMargin=0.553,rightMargin=0.553)
 
 #Two Columns
+# Frame(x1, y1, width,height, leftPadding=6, bottomPadding=6, rightPadding=6, topPadding=6, id=None, showBoundary=0)
 frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width/2-6, doc.height, id='col1')
 frame2 = Frame(doc.leftMargin+doc.width/2+6, doc.bottomMargin, doc.width/2-6, doc.height, id='col2')
 
+# It looks like we're creating a "flowable" here:
+words = "lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et".split()
+Elements=[]
 Elements.append(Paragraph(" ".join([random.choice(words) for i in range(1000)]),styles['Normal']))
+
+
 doc.addPageTemplates([PageTemplate(id='TwoCol',frames=[frame1,frame2]), ])
 
 
 #start the construction of the pdf
+# .build() takes a List of flowables 
 doc.build(Elements)
