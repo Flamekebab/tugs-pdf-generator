@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.fonts import addMapping
 from reportlab.lib import utils
 from reportlab.lib.units import cm
 from reportlab.platypus import Frame, Image
@@ -28,7 +29,14 @@ def main(american_user = False):
     pdfmetrics.registerFont(TTFont("SSP Italic", "./fonts/SourceSansPro-It.ttf"))
     pdfmetrics.registerFont(TTFont("SSP Bold", "./fonts/SourceSansPro-Bold.ttf"))
     pdfmetrics.registerFont(TTFont("SSP Bold Italic", "./fonts/SourceSansPro-BoldIt.ttf"))
-    # From now on we can use the syntax "canvas.setFont("Ridgeline", 32)" to set the font
+
+    # addMapping(face, bold, italic, psname)
+    addMapping('SSP', 0, 0, 'SSP') #normal
+    addMapping('SSP', 0, 1, 'SSP Italic') #italic
+    addMapping('SSP', 1, 0, 'SSP Bold') #bold
+    addMapping('SSP', 1, 1, 'SSP Bold Italic') #italic and bold
+
+    # From now on we can use the syntax "canvas.setFont("Ridgeline", 32)" to set the font and size
 
     # We're going to need to draw a box for this image but that can happen later
     
