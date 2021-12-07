@@ -75,6 +75,10 @@ paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
 # I've yet to figure out where these IDs are actually used though!
 doc.addPageTemplates([PageTemplate(id='TwoCol',frames=[frame1,frame2]), ])
 
+# Page 19 of the Reference PDF - BaseDocTemplate
+# def handle_nextPageTemplate(self,pt):
+# On endPage change to the page template with name or index pt
+
 #start the construction of the pdf
 # .build() takes a List of flowables 
 # BaseDocTemplate.build(self, flowables, filename=None, canvasmaker=canvas.Canvas)
