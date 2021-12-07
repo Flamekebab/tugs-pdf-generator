@@ -22,17 +22,16 @@
 #
 #pdf.save()
 
-
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, PageBreak, PageTemplate
 from reportlab.lib.styles import getSampleStyleSheet
 #from reportlab.lib.enums import TA_JUSTIFY
-import random
 
 # Load some defaults
 styles=getSampleStyleSheet()
 
 # We'll need to check these margins, I suspect
 # We can turn off showBoundary when we're ready but it's handy for debugging
+# We create a basic document template and then add *page* templates to it.
 doc = BaseDocTemplate('test.pdf',showBoundary=1,leftMargin=0.553,rightMargin=0.553)
 
 #Two Columns
@@ -40,10 +39,6 @@ doc = BaseDocTemplate('test.pdf',showBoundary=1,leftMargin=0.553,rightMargin=0.5
 frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width/2-6, doc.height, id='col1')
 frame2 = Frame(doc.leftMargin+doc.width/2+6, doc.bottomMargin, doc.width/2-6, doc.height, id='col2')
 
-# It looks like we're creating a "flowable" here:
-#words = "lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et".split()
-#Elements=[]
-#Elements.append(Paragraph(" ".join([random.choice(words) for i in range(1000)]),styles['Normal']))
 
 # From the documentation (page 22 of the reference PDF):
 # Class Paragraph:
@@ -55,15 +50,32 @@ frame2 = Frame(doc.leftMargin+doc.width/2+6, doc.bottomMargin, doc.width/2-6, do
 # This class is a flowable that can format a block of text
 # into a paragraph with a given style.
 
-bacon_ipsum = "Pork belly ut enim aliquip andouille irure. Ground round velit brisket shoulder, eiusmod tri-tip dolor. Minim rump beef, tenderloin voluptate do capicola labore landjaeger ea quis bacon et. Pork chop tempor shankle hamburger nulla."
+# Huh, triple quotes allows for multi-line strings. Useful!
+bacon_ipsum = """Pork belly ut enim aliquip andouille irure. Ground round velit brisket shoulder, eiusmod tri-tip dolor. Minim rump beef, tenderloin voluptate do capicola labore landjaeger ea quis bacon et. Pork chop tempor shankle hamburger nulla.
 
-# We need to add paragraphs
+Cow ut doner ipsum fugiat aliquip. Proident pork loin minim nostrud bacon, beef ball tip ullamco. Short loin porchetta pig, dolore nulla ex ut ham hock kielbasa bresaola swine ipsum excepteur tongue veniam. Dolor doner ball tip, tail tenderloin capicola nostrud bacon. Quis shankle t-bone kevin, anim officia sunt excepteur corned beef short ribs spare ribs laboris in voluptate. Pancetta sunt pork chop burgdoggen tenderloin frankfurter. Brisket fugiat adipisicing filet mignon.
+
+Velit spare ribs alcatra, excepteur in filet mignon ground round nostrud frankfurter drumstick tail. Leberkas in in brisket venison ribeye nostrud sunt quis spare ribs ullamco nisi adipisicing boudin pig. Cow meatloaf eu flank, pancetta magna commodo enim strip steak in. Chuck quis spare ribs turducken, capicola beef brisket salami doner.
+
+Aliqua tri-tip shankle ribeye hamburger jerky filet mignon pork chop turkey. Aliquip flank mollit eiusmod. Veniam tempor reprehenderit laboris. Quis jerky dolor, picanha esse irure tempor ut laboris biltong. Qui labore tail minim cupidatat turkey aute eu anim porchetta. Biltong ball tip porchetta, non cupim t-bone deserunt consectetur ad irure pig shankle tri-tip frankfurter beef ribs.
+
+Swine pork belly rump, nostrud ham hock cow boudin. Adipisicing dolore capicola in dolor hamburger. Cupidatat reprehenderit drumstick chislic tri-tip short loin aliqua buffalo tail burgdoggen pork fugiat porchetta. Nostrud eiusmod proident pork chop. Andouille alcatra dolor cow dolore porchetta."""
+
+# We need to add paragraphs, a kind of "flowable"
 paragraphs = []
 paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
+paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
+paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
+# If we add even more text another page is automatically created with more frames for it to flow into
+# paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
+# paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
+# paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
 
+# I believe that listing the frames like this causes text to overflow into the next frame
+# I've yet to figure out where these IDs are actually used though!
 doc.addPageTemplates([PageTemplate(id='TwoCol',frames=[frame1,frame2]), ])
-
 
 #start the construction of the pdf
 # .build() takes a List of flowables 
+# BaseDocTemplate.build(self, flowables, filename=None, canvasmaker=canvas.Canvas)
 doc.build(paragraphs)
