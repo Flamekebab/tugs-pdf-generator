@@ -61,6 +61,8 @@ ReportLab to generate the two columns of text, the text flowing between the two.
 The page always starts on the right - i.e. the page number is in the bottom right corner. The page number should be in Ridgeline.
 Let's limit it to a single page. If you've got more to say than that then create your own fork as it's enough of an edge case that it's overkill to build for. We'll figure out a character count that it maxes out at and implement that in the HTML form.
 
+Converting the text provided by the user to the appropriate Paragraph format (see page 22 of the ReportLab reference PDF) will present some challenges but nothing we can't handle. Initially we'll just do plain text. Eventually it'd be nice to have support for a bit of formatting (even if it's just in the form of a checkbox that says "use HTML?").
+
 Once that's done create the ToC.
 
 Take the input from the HTML form and check the page count in the manifest. Based on whether a cover page is included or not calculate on which page each document will start. Grab the title of each from the manifest and create the relevant text data.

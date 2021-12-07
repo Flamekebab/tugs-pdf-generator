@@ -25,7 +25,7 @@
 
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, PageBreak, PageTemplate
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.enums import TA_JUSTIFY
+#from reportlab.lib.enums import TA_JUSTIFY
 import random
 
 # Load some defaults
@@ -41,14 +41,29 @@ frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width/2-6, doc.height, id='
 frame2 = Frame(doc.leftMargin+doc.width/2+6, doc.bottomMargin, doc.width/2-6, doc.height, id='col2')
 
 # It looks like we're creating a "flowable" here:
-words = "lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et".split()
-Elements=[]
-Elements.append(Paragraph(" ".join([random.choice(words) for i in range(1000)]),styles['Normal']))
+#words = "lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et".split()
+#Elements=[]
+#Elements.append(Paragraph(" ".join([random.choice(words) for i in range(1000)]),styles['Normal']))
 
+# From the documentation (page 22 of the reference PDF):
+# Class Paragraph:
+# Paragraph(text, style, bulletText=None, caseSensitive=1)
+# text - a string of stuff to go into the paragraph.
+# style - a style definition as in reportlab.lib.styles.
+# bulletText - an optional bullet defintion.
+# caseSensitive - set this to 0 if you want the markup tags and their attributes to be case-insensitive.
+# This class is a flowable that can format a block of text
+# into a paragraph with a given style.
+
+bacon_ipsum = "Pork belly ut enim aliquip andouille irure. Ground round velit brisket shoulder, eiusmod tri-tip dolor. Minim rump beef, tenderloin voluptate do capicola labore landjaeger ea quis bacon et. Pork chop tempor shankle hamburger nulla."
+
+# We need to add paragraphs
+paragraphs = []
+paragraphs.append(Paragraph(bacon_ipsum,styles['Normal']))
 
 doc.addPageTemplates([PageTemplate(id='TwoCol',frames=[frame1,frame2]), ])
 
 
 #start the construction of the pdf
 # .build() takes a List of flowables 
-doc.build(Elements)
+doc.build(paragraphs)
