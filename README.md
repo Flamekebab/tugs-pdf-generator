@@ -80,7 +80,7 @@ How to do this I'm less sure of as I'm not yet familiar enough with the tools (b
 
 A web-based front-end that will provide the end user with a list of available documents to choose from as basic functionality.
 
-This may end up being both complicated and simple. Complicated in that it'll probably be easiest to do it using a framework like Flask, simple in that what we'll be asking of it isn't too complicated.
+This may end up being both complicated and simple. Complicated in that it'll probably be easiest to do it using a framework like Fast API, simple in that what we'll be asking of it isn't too complicated.
 
 
 # Questions to be answered:
