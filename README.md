@@ -51,8 +51,10 @@ Either we have a manifest file for each PDF or we have a single central index. I
 
 The code should check the timestamp on the central index and only recreate it if it's older than (time). No need to rescan a load of files every time the page loads.
 
-JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, left or right status, and anything else that could be useful.
-The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found. Similarly if no left/right version is found fallback to a generic version of the document.
+JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, left or right status, and anything else that could be useful. 
+The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found. Similarly if no left/right version is found fallback to a generic version of the document. Importantly we'll want a default document type so that when we render out the list of available documents we have a section for "the rest".
+
+I'm thinking it makes sense to sort the documents at this stage too as that will mean the GUI doesn't have to do as much heavy lifting. That might be backwards though!
 
 ## Cover page generator/Table of contents generator
 
