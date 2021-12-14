@@ -51,8 +51,10 @@ Either we have a manifest file for each PDF or we have a single central index. I
 
 The code should check the timestamp on the central index and only recreate it if it's older than (time). No need to rescan a load of files every time the page loads.
 
-JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, left or right status, and anything else that could be useful.
-The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found. Similarly if no left/right version is found fallback to a generic version of the document.
+JSON is probably the easiest way to handle this - each object keeping track of its title, document type, author, licence, page count, left or right status, and anything else that could be useful. 
+The code that scans the data should be built in such a way as to allow us to add additional data without breaking anything later. Define some sensible defaults if the relevant data isn't found. Similarly if no left/right version is found fallback to a generic version of the document. Importantly we'll want a default document type so that when we render out the list of available documents we have a section for "the rest".
+
+I'm thinking it makes sense to sort the documents at this stage too as that will mean the GUI doesn't have to do as much heavy lifting. That might be backwards though!
 
 ## Cover page generator/Table of contents generator
 
@@ -80,7 +82,7 @@ How to do this I'm less sure of as I'm not yet familiar enough with the tools (b
 
 A web-based front-end that will provide the end user with a list of available documents to choose from as basic functionality.
 
-This may end up being both complicated and simple. Complicated in that it'll probably be easiest to do it using a framework like Flask, simple in that what we'll be asking of it isn't too complicated.
+This may end up being both complicated and simple. Complicated in that it'll probably be easiest to do it using a framework like Fast API, simple in that what we'll be asking of it isn't too complicated.
 
 
 # Questions to be answered:
