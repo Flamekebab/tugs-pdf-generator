@@ -20,8 +20,6 @@ def main(output_filename: str ="test.pdf"):
 
     '''
 
-    canvas = Canvas(output_filename)
-
     # Ridgeline for the titles
     # Source Sans Pro for the body text
     fonts = (
@@ -42,47 +40,8 @@ def main(output_filename: str ="test.pdf"):
     addMapping('SSP', 1, 0, 'SSP Bold')  # bold
     addMapping('SSP', 1, 1, 'SSP Bold Italic')  # italic and bold
 
-    # From now on we can use the syntax "canvas.setFont("Ridgeline", 32)" to set the font and size
-    canvas.setFont("Ridgeline", 18)
-    #canvas.drawString(72, 72, "Hello, World")
-
-
-    # Building a stylesheet from scratch is a hassle, instead we use the sample stylsheet as a base
-    styles = getSampleStyleSheet()
-    # To see the various options use
-    #print(styles.list())
-
-    # Needed things - H1, H2, body text
-    h1 = ParagraphStyle(
-        'document_title',
-        parent=styles['Heading1'],
-        fontName="Ridgeline",
-        fontSize=50,
-        alignment=1,
-        spaceAfter=50,
-        )
-    h2 = ParagraphStyle(
-        'subheading',
-        parent=styles['Heading3'],
-        fontName="Ridgeline",
-        fontSize=20,
-        alignment=0,
-        spaceAfter=20,
-        )
-    body_paragraph = ParagraphStyle(
-        'body_text',
-        parent=styles['BodyText'],
-        fontName="SSP",
-        fontSize=14,
-        alignment=4, # page 77 of the Reference PDF (4 = justify)
-        spaceAfter=14,
-        bulletFontName="SSP"
-        )
-    styles.add(h1)
-    styles.add(h2)
-    styles.add(body_paragraph)
-
-
+    # Add the style elements
+    add_tUGS_Style()
     # These dimensions worked out from existing PDFs
     doc = BaseDocTemplate('test.pdf', showBoundary=1, leftMargin=14.5 * mm, rightMargin=14.5 * mm, bottomMargin=35 * mm, topMargin=30 * mm)
 
@@ -118,8 +77,6 @@ def main(output_filename: str ="test.pdf"):
 
     doc.build(paragraphs)
 
-    #canvas.save()
-
 
 def add_font(name: str, path: str):
     ''' Non-default fonts must be registered before use in PDF generation.
@@ -131,6 +88,46 @@ def add_font(name: str, path: str):
     '''
     pdfmetrics.registerFont(TTFont(name, path))
 
+def add_tUGS_Style():
+    ''' Abstracting this out to make changes to the style easier.
+
+    '''
+
+    # The sample stylesheet provides a base
+    global styles
+    styles = getSampleStyleSheet()
+    # To see the various existing style components use:
+    #print(styles.list())
+
+    # Needed things - H1, H2, body text
+    h1 = ParagraphStyle(
+        'document_title',
+        parent=styles['Heading1'],
+        fontName="Ridgeline",
+        fontSize=50,
+        alignment=1,
+        spaceAfter=50,
+        )
+    h2 = ParagraphStyle(
+        'subheading',
+        parent=styles['Heading3'],
+        fontName="Ridgeline",
+        fontSize=20,
+        alignment=0,
+        spaceAfter=20,
+        )
+    body_paragraph = ParagraphStyle(
+        'body_text',
+        parent=styles['BodyText'],
+        fontName="SSP",
+        fontSize=14,
+        alignment=4, # page 77 of the Reference PDF (4 = justify)
+        spaceAfter=14,
+        bulletFontName="SSP"
+        )
+    styles.add(h1)
+    styles.add(h2)
+    styles.add(body_paragraph)
 
 if __name__ == "__main__":
     main()
