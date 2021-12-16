@@ -18,6 +18,9 @@ def get_metadata(input_file):
     json_object = json.dumps(metadata, sort_keys = True, indent = 4)
     print("Metadata that was found:\n", json_object)
     print(f"Number of pages: {number_of_pages}")
+    print("Adding Number Of Pages value to metadata.")
+    pages_dict = {"/NumberOfPages": number_of_pages}
+    metadata.update(pages_dict)
 
     # Creates output file in write mode ("w"). Sorts the "key : value" pairs 
     # alphabetically and indents 4 spaces when exporting.
