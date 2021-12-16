@@ -84,7 +84,7 @@ def main(output_filename: str ="test.pdf"):
 
 
     doc = BaseDocTemplate('test.pdf', showBoundary=1, leftMargin=0.553, rightMargin=0.553)
-
+#
     frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width / 2 - 6, doc.height, id='col1')
     frame2 = Frame(doc.leftMargin + doc.width / 2 + 6, doc.bottomMargin, doc.width / 2 - 6, doc.height, id='col2')
     paragraphs = []
