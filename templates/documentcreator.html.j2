@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tUGS PDF creator and assembler</title>
+</head>
+<body>
+<form method="post">
+    <input type="number" name="num" value="1234"/>
+    <input type="submit">
+</form>
+
+<ul>
+{% for pdf in documents: %}
+<li>{{ pdf }}</li>
+{% endfor %}
+</ul>
+<p>Result: {{ result }}</p>
+
+
+
+</body>
+</html>
