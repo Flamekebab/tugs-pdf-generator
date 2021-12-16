@@ -14,7 +14,8 @@ def get_metadata(input_file):
 
     # Prints out the metadata and number of pages to the console for 
     # verification purposes. The metadata is sorted alphabetically and indented 
-    # with 4 spaces. The number of pages is not exported to the JSON.
+    # with 4 spaces. The number of pages is not exported to the JSON 
+    # automatically so we add it to the metadata.
     json_object = json.dumps(metadata, sort_keys = True, indent = 4)
     print("Metadata that was found:\n", json_object)
     print(f"Number of pages: {number_of_pages}")
