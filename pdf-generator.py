@@ -6,7 +6,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.fonts import addMapping
 from reportlab.lib import utils
-from reportlab.lib.units import cm
+from reportlab.lib.units import mm
 from reportlab.platypus import Frame, Image
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, PageBreak, PageTemplate
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -83,17 +83,27 @@ def main(output_filename: str ="test.pdf"):
     styles.add(body_paragraph)
 
 
-    doc = BaseDocTemplate('test.pdf', showBoundary=1, leftMargin=0.553, rightMargin=0.553)
-#
-    frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width / 2 - 6, doc.height, id='col1')
-    frame2 = Frame(doc.leftMargin + doc.width / 2 + 6, doc.bottomMargin, doc.width / 2 - 6, doc.height, id='col2')
+    # These dimensions worked out from existing PDFs
+    doc = BaseDocTemplate('test.pdf', showBoundary=1, leftMargin=14.5 * mm, rightMargin=14.5 * mm, bottomMargin=35 * mm, topMargin=30 * mm)
+
+    # As yet undecided on whether to allow header paragraphs (all bold SSP, centre aligned)
+    # If so push the paragraphs down.
+    header_paragraph = False
+    if header_paragraph:
+        body_text_height = doc.height * 0.9
+    else:
+        body_text_height = doc.height
+
+    frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width / 2 - 6, body_text_height, id='col1')
+    frame2 = Frame(doc.leftMargin + doc.width / 2 + 6, doc.bottomMargin, doc.width / 2 - 6, body_text_height, id='col2')
+
     paragraphs = []
 
     bacon_ipsum = """Pork belly ut enim aliquip andouille irure. Ground round velit brisket shoulder, eiusmod tri-tip dolor. Minim rump beef, tenderloin voluptate do capicola labore landjaeger ea quis bacon et. Pork chop tempor shankle hamburger nulla.
 
     Cow ut doner ipsum fugiat aliquip. Proident pork loin minim nostrud bacon, beef ball tip ullamco. Short loin porchetta pig, dolore nulla ex ut ham hock kielbasa bresaola swine ipsum excepteur tongue veniam. Dolor doner ball tip, tail tenderloin capicola nostrud bacon. Quis shankle t-bone kevin, anim officia sunt excepteur corned beef short ribs spare ribs laboris in voluptate. Pancetta sunt pork chop burgdoggen tenderloin frankfurter. Brisket fugiat adipisicing filet mignon.
 
-    Velit spare ribs alcatra, excepteur in filet mignon ground round nostrud frankfurter drumstick tail. Leberkas in in brisket venison ribeye nostrud sunt quis spare ribs ullamco nisi adipisicing boudin pig. Cow meatloaf eu flank, pancetta magna commodo enim strip steak in. Chuck quis spare ribs turducken, capicola beef brisket salami doner.
+    Velit spare ribs alcatra, excepteur in filet mignon ground round nostrud frankfurter drumstick tail.Leberkas in in brisket venison ribeye nostrud sunt quis spare ribs ullamco nisi adipisicing boudin pig. Cow meatloaf eu flank, pancetta magna commodo enim strip steak in. Chuck quis spare ribs turducken, capicola beef brisket salami doner.
 
     Aliqua tri-tip shankle ribeye hamburger jerky filet mignon pork chop turkey. Aliquip flank mollit eiusmod. Veniam tempor reprehenderit laboris. Quis jerky dolor, picanha esse irure tempor ut laboris biltong. Qui labore tail minim cupidatat turkey aute eu anim porchetta. Biltong ball tip porchetta, non cupim t-bone deserunt consectetur ad irure pig shankle tri-tip frankfurter beef ribs.
 
