@@ -1,8 +1,12 @@
 from PyPDF2 import PdfFileReader
 import json
 
-def get_metadata(input_file):
+def get_metadata(input_file: str):
+    ''' Takes an input PDF and generates a dictionary based on the metadata it contains.
 
+    :param input_file: PDF to extract metadata from.
+    :return:
+    '''
     # Opens (and closes because we are using "with".) provided input file in 
     # read mode.
     with open(input_file, "rb") as metadata_file:
