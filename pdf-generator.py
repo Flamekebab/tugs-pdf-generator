@@ -1,5 +1,3 @@
-# We'll be using ReportLab to generate PDFs as that's currently what I've got
-# If something else is a better fit then I definitely want to hear about it!
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.fonts import addMapping
@@ -59,14 +57,21 @@ def main(body_text_input: str, output_filename: str = "test.pdf"):
     frame1 = Frame(doc.leftMargin, doc.bottomMargin, doc.width / 2 - 6, body_text_height, id='col1')
     frame2 = Frame(doc.leftMargin + doc.width / 2 + 6, doc.bottomMargin, doc.width / 2 - 6, body_text_height, id='col2')
 
+    # paragraphs is a list of ReportLab Paragraph objects
     paragraphs = []
+
+    # The body_text_input may need processing as it comes in - it'll depend on how much heavy lifting the GUI does
+    # e.g. converting "<h2>subheading</h2> some body text" to [('h2', 'subheading'), ('body', 'some body text')]
 
     # <br/> tags work but <br> causes errors
 
+    # Test formatting
     paragraphs.append(Paragraph("Heading 1", styles['document_title']))
     paragraphs.append(Paragraph(body_text_input, styles['body_text']))
     paragraphs.append(Paragraph("Heading 2", styles['subheading']))
     paragraphs.append(Paragraph(body_text_input, styles['body_text']))
+    ####
+
     doc.addPageTemplates([PageTemplate(id='TwoCol', frames=[frame1, frame2]), ])
 
     doc.build(paragraphs)
