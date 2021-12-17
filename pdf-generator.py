@@ -4,7 +4,6 @@ from reportlab.lib.fonts import addMapping
 from reportlab.lib.units import mm, cm
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, PageBreak, PageTemplate
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import Image
 from reportlab.pdfgen.canvas import Canvas
 
 
@@ -48,7 +47,6 @@ def frontpage_generator(body_text_input: str, output_filename: str = "test.pdf")
         bottomMargin=35 * mm,
         topMargin=30 * mm)
 
-
     # As yet undecided on whether to allow header paragraphs (all bold SSP, centre aligned)
     # If so push the paragraphs down.
     header_paragraph = False
@@ -81,40 +79,50 @@ def frontpage_generator(body_text_input: str, output_filename: str = "test.pdf")
     # The table of contents (ToC) will always be on a new page:
     paragraphs.append(PageBreak())
 
-
     def add_header_footer(canvas, doc):
-        # The coordinates end up a bit strange with the images
-        canvas.translate(16,-265)
+
+        page_num_y = 1.4 * cm
+
         if canvas.getPageNumber() % 2 == 0:
+            # even page
             footer = footer_l
             header = header_l
-            page_num_x = 1.3 * cm
-            page_num_y = 1.3 * cm
+            page_num_x_base = 1.4 * cm
         else:
+            # odd page
             footer = footer_r
             header = header_r
-            page_num_x = 19.3 * cm
-            page_num_y = 1.3 * cm
+            page_num_x_base = 19.3 * cm
+
+
+        # The centre anchoring makes the header and footer positioning awkward
+        canvas.translate(16, -265)
         canvas.drawImage(footer, 0 * cm, 0 * cm, width=19.9 * cm, preserveAspectRatio=True, anchor='c')
         canvas.drawImage(header, 0.07 * cm, 26.56 * cm, width=19.8 * cm, preserveAspectRatio=True, anchor='c')
 
         # Reset the coordinates for text
         canvas.translate(-16, 265)
-        canvas.setFont("Ridgeline", 30)
+        # The larger the page number is the smaller the font and the smaller the needed offset
+        if canvas.getPageNumber() < 10:
+            canvas.setFont("Ridgeline", 30)
+            page_num_x = page_num_x_base + 0.2 * cm
+        elif canvas.getPageNumber() > 9 and canvas.getPageNumber() < 100:
+            canvas.setFont("Ridgeline", 25)
+            page_num_x = page_num_x_base - 0.1 * cm
+        else:
+            canvas.setFont("Ridgeline", 23)
+            page_num_x = page_num_x_base - 0.3 * cm
 
-        canvas.drawString(page_num_x, page_num_y, str(canvas.getPageNumber()))
-
+        canvas.drawString(page_num_x - 0.3 * cm, page_num_y, str(canvas.getPageNumber()))
 
     header_r = "./headers-footers/top-bar-R.jpg"
     header_l = "./headers-footers/top-bar-L.jpg"
     footer_r = "./headers-footers/bottom-bar-R.jpg"
     footer_l = "./headers-footers/bottom-bar-L.jpg"
 
-
     # As far as I can see, so far, ReportLab only supports links with anchors (and we're not adding those!)
     # TODO: Split the PDFs by type (from metadata keywords)
     # Provide a list of PDFs
-
 
     page_template = PageTemplate(id='TwoCol', frames=[frame1, frame2], onPageEnd=add_header_footer)
     doc.addPageTemplates(page_template)
@@ -152,7 +160,7 @@ def add_tugs_style():
         fontSize=50,
         alignment=1,
         spaceAfter=50,
-        )
+    )
     h2 = ParagraphStyle(
         'subheading',
         parent=styles['Heading3'],
@@ -160,7 +168,7 @@ def add_tugs_style():
         fontSize=20,
         alignment=0,
         spaceAfter=20,
-        )
+    )
     body_paragraph = ParagraphStyle(
         'body_text',
         parent=styles['BodyText'],
@@ -169,7 +177,7 @@ def add_tugs_style():
         alignment=4,  # page 77 of the Reference PDF (4 = justify)
         spaceAfter=12,
         bulletFontName="SSP"
-        )
+    )
     styles.add(h1)
     styles.add(h2)
     styles.add(body_paragraph)
