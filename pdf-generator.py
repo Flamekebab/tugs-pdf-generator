@@ -1,12 +1,14 @@
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.fonts import addMapping
-from reportlab.lib.units import mm
+from reportlab.lib.units import mm, cm
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, PageBreak, PageTemplate
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import Image
+from reportlab.pdfgen.canvas import Canvas
 
 
-def main(body_text_input: str, output_filename: str = "test.pdf"):
+def frontpage_generator(body_text_input: str, output_filename: str = "test.pdf"):
     """ Generates PDFs with arbitrary text content for merging with existing blank PDFs.
 
     :param body_text_input: Currently any old string - to be modified later
@@ -40,11 +42,12 @@ def main(body_text_input: str, output_filename: str = "test.pdf"):
     # These dimensions worked out from existing PDFs
     doc = BaseDocTemplate(
         output_filename,
-        showBoundary=1,
+        showBoundary=0,
         leftMargin=14.5 * mm,
         rightMargin=14.5 * mm,
         bottomMargin=35 * mm,
         topMargin=30 * mm)
+
 
     # As yet undecided on whether to allow header paragraphs (all bold SSP, centre aligned)
     # If so push the paragraphs down.
@@ -62,17 +65,59 @@ def main(body_text_input: str, output_filename: str = "test.pdf"):
 
     # The body_text_input may need processing as it comes in - it'll depend on how much heavy lifting the GUI does
     # e.g. converting "<h2>subheading</h2> some body text" to [('h2', 'subheading'), ('body', 'some body text')]
+    # We may also want to limit the amount of allowed input
 
     # <br/> tags work but <br> causes errors
 
     # Test formatting
+    # paragraphs.append(Image(footer, width=19.5 * cm))
     paragraphs.append(Paragraph("Heading 1", styles['document_title']))
     paragraphs.append(Paragraph(body_text_input, styles['body_text']))
     paragraphs.append(Paragraph("Heading 2", styles['subheading']))
     paragraphs.append(Paragraph(body_text_input, styles['body_text']))
+    paragraphs.append(Paragraph(body_text_input, styles['body_text']))
     ####
 
-    doc.addPageTemplates([PageTemplate(id='TwoCol', frames=[frame1, frame2]), ])
+    # The table of contents (ToC) will always be on a new page:
+    paragraphs.append(PageBreak())
+
+
+    def add_header_footer(canvas, doc):
+        # The coordinates end up a bit strange with the images
+        canvas.translate(16,-265)
+        if canvas.getPageNumber() % 2 == 0:
+            footer = footer_l
+            header = header_l
+            page_num_x = 1.3 * cm
+            page_num_y = 1.3 * cm
+        else:
+            footer = footer_r
+            header = header_r
+            page_num_x = 19.3 * cm
+            page_num_y = 1.3 * cm
+        canvas.drawImage(footer, 0 * cm, 0 * cm, width=19.9 * cm, preserveAspectRatio=True, anchor='c')
+        canvas.drawImage(header, 0.07 * cm, 26.56 * cm, width=19.8 * cm, preserveAspectRatio=True, anchor='c')
+
+        # Reset the coordinates for text
+        canvas.translate(-16, 265)
+        canvas.setFont("Ridgeline", 30)
+
+        canvas.drawString(page_num_x, page_num_y, str(canvas.getPageNumber()))
+
+
+    header_r = "./headers-footers/top-bar-R.jpg"
+    header_l = "./headers-footers/top-bar-L.jpg"
+    footer_r = "./headers-footers/bottom-bar-R.jpg"
+    footer_l = "./headers-footers/bottom-bar-L.jpg"
+
+
+    # As far as I can see, so far, ReportLab only supports links with anchors (and we're not adding those!)
+    # TODO: Split the PDFs by type (from metadata keywords)
+    # Provide a list of PDFs
+
+
+    page_template = PageTemplate(id='TwoCol', frames=[frame1, frame2], onPageEnd=add_header_footer)
+    doc.addPageTemplates(page_template)
 
     doc.build(paragraphs)
 
@@ -120,9 +165,9 @@ def add_tugs_style():
         'body_text',
         parent=styles['BodyText'],
         fontName="SSP",
-        fontSize=14,
+        fontSize=12,
         alignment=4,  # page 77 of the Reference PDF (4 = justify)
-        spaceAfter=14,
+        spaceAfter=12,
         bulletFontName="SSP"
         )
     styles.add(h1)
@@ -141,4 +186,4 @@ if __name__ == "__main__":
 
         Swine pork belly rump, nostrud ham hock cow boudin. Adipisicing dolore capicola in dolor hamburger. Cupidatat reprehenderit drumstick chislic tri-tip short loin aliqua buffalo tail burgdoggen pork fugiat porchetta. Nostrud eiusmod proident pork chop. Andouille alcatra dolor cow dolore porchetta."""
 
-    main(bacon_ipsum)
+    frontpage_generator(bacon_ipsum)
